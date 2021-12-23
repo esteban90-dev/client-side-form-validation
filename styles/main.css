@@ -19,3 +19,14 @@ input {
   padding: 5px;
   box-sizing: border-box;
 }
+
+.invalid {
+  border-color: red;
+  border-width: 2px;
+  border-style: dashed;
+}
+
+.error-message {
+  color: red;
+  margin-left: 15px;
+}
