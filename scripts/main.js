@@ -10,7 +10,13 @@ email.addEventListener('input', () => {
     displayInvalid(email); 
   } else {
     removeInvalid(email);
-    removeEmailError();
+    removeError(email);
+  }
+});
+
+email.addEventListener('focusout', () => {
+  if (!testEmail()) {
+    displayError(email, 'please enter valid email address');
   }
 });
 
@@ -19,7 +25,13 @@ country.addEventListener('input', () => {
     displayInvalid(country);
   } else {
     removeInvalid(country);
-    removeCountryError();
+    removeError(country);
+  }
+});
+
+country.addEventListener('focusout', () => {
+  if (!testCountry()) {
+    displayError(country, 'please enter valid country');
   }
 });
 
@@ -28,7 +40,13 @@ zip.addEventListener('input', () => {
     displayInvalid(zip);
   } else {
     removeInvalid(zip);
-    removeZipError();
+    removeError(zip);
+  }
+});
+
+zip.addEventListener('focusout', () => {
+  if (!testZip()) {
+    displayError(zip, 'please enter valid zip code');
   }
 });
 
@@ -37,7 +55,13 @@ password.addEventListener('input', () => {
     displayInvalid(password);
   } else {
     removeInvalid(password);
-    removePasswordLengthError();
+    removeError(password);
+  }
+});
+
+password.addEventListener('focusout', () => {
+  if (!testPasswordLength()) {
+    displayError(password, 'please enter a password that is at least 5 characters long');
   }
 });
 
@@ -46,7 +70,13 @@ passwordConfirm.addEventListener('input', () => {
     displayInvalid(passwordConfirm);
   } else {
     removeInvalid(passwordConfirm);
-    removePasswordMatchError();
+    removeError(passwordConfirm);
+  }
+});
+
+passwordConfirm.addEventListener('focusout', () => {
+  if (!testPasswordMatch()) {
+    displayError(passwordConfirm, 'password confirmation does not match password');
   }
 });
 
@@ -59,127 +89,46 @@ form.addEventListener('submit', (event) => {
 
   if (!testEmail()) {
     displayInvalid(email);
-    displayEmailError();
+    displayError(email, 'please enter valid email address');
   }
 
   if (!testCountry()) {
     displayInvalid(country);
-    displayCountryError();
+    displayError(country, 'please enter valid country');
   }
 
   if (!testZip()) {
     displayInvalid(zip);
-    displayZipError();
+    displayError(zip, 'please enter valid zip code');
   }
 
   if (!testPasswordLength()) {
     displayInvalid(password);
-    displayPasswordLengthError();
+    displayError(password, 'please enter a password that is at least 5 characters long');
   }
 
   if (!testPasswordMatch()) {
     displayInvalid(passwordConfirm);
-    displayPasswordMatchError();
+    displayError(passwordConfirm, 'password confirmation does not match password');
   }
 });
 
-function displayEmailError() {
-  if (!document.querySelector('#emailError')) {
-    const message = 'you must enter a valid email address.';
-    const p = document.createElement('p');
-    p.classList.add('error-message');
-    p.setAttribute('id','emailError');
-    p.innerHTML = message;
-  
-    form.insertBefore(p, email);
-  }
+function displayError(element, errorMessage) {
+  const pError = document.createElement('p');
+
+  removeError(element);
+
+  pError.classList.add('error');
+  pError.innerHTML = errorMessage;
+  pError.setAttribute('id',element.getAttribute('id') + "Error");
+  element.insertAdjacentElement('afterend', pError);
 }
 
-function removeEmailError() {
-  const emailError = document.querySelector('#emailError');
+function removeError(element) {
+  const error = document.querySelector("#" + element.getAttribute('id') + "Error");
 
-  if (emailError) {
-    emailError.remove();
-  }
-}
-
-function displayCountryError() {
-  if (!document.querySelector('#countryError')) {
-    const message = 'you must enter a valid country.';
-    const p = document.createElement('p');
-    p.classList.add('error-message');
-    p.setAttribute('id','countryError');
-    p.innerHTML = message;
-
-    form.insertBefore(p, country);
-  }
-}
-
-function removeCountryError() {
-  const countryError = document.querySelector('#countryError');
-
-  if (countryError) {
-    countryError.remove();
-  }
-}
-
-function displayZipError() {
-  if (!document.querySelector('#zipError')) {
-    const message = 'you must enter a valid zip code.';
-    const p = document.createElement('p');
-    p.classList.add('error-message');
-    p.setAttribute('id','zipError');
-    p.innerHTML = message;
-
-    form.insertBefore(p, zip);
-  }
-}
-
-function removeZipError() {
-  const zipError = document.querySelector('#zipError');
-
-  if (zipError) {
-    zipError.remove();
-  }
-}
-
-function displayPasswordLengthError() {
-  if (!document.querySelector('#passwordLengthError')) {
-    const message = 'you must enter a password longer than 4 characters.';
-    const p = document.createElement('p');
-    p.classList.add('error-message');
-    p.setAttribute('id','passwordLengthError');
-    p.innerHTML = message;
-
-    form.insertBefore(p, password);
-  }
-}
-
-function removePasswordLengthError() {
-  const passwordLengthError = document.querySelector('#passwordLengthError');
-
-  if (passwordLengthError) {
-    passwordLengthError.remove();
-  }
-}
-
-function displayPasswordMatchError() {
-  if (!document.querySelector('#passwordMatchError')) {
-    const message = 'password confirmation does not match password.';
-    const p = document.createElement('p');
-    p.classList.add('error-message');
-    p.setAttribute('id','passwordMatchError');
-    p.innerHTML = message;
-
-    form.insertBefore(p, passwordConfirm);
-  }
-}
-
-function removePasswordMatchError() {
-  const passwordMatchError = document.querySelector('#passwordMatchError');
-
-  if (passwordMatchError) {
-    passwordMatchError.remove();
+  if (error) {
+    error.remove();
   }
 }
 
